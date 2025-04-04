@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController
+public class ProductController : ControllerBase
 {
     private static List<Product> _products = new()
     {
@@ -42,6 +42,15 @@ public class ProductController
 
         product.Name = updatedProduct.Name;
         product.Price = updatedProduct.Price;
+        return NoContent();
+    }
+
+    [HttpDelete("{Id}")]
+    public IActionResult Delete(int id)
+    {
+        var product = _products.FirstOrDefault(p => p.Id == id);
+        if (product == null) return NotFound();
+        _products.Remove(product);
         return NoContent();
     }
 }
